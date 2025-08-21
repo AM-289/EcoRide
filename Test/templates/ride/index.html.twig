@@ -11,13 +11,13 @@
 <div class="example-wrapper">
     <h1>Hello {{ controller_name }}! ✅</h1>
     
-    <a class="btn btn-primary-sm" href={{ path('ride.create')}}> Créer un trajet </a>
+    <a class="btn btn-primary" href={{ path('ride.create')}}> Créer un trajet </a>
 
     <ul>
         {% for ride in rides %}
         <li>
-            <a href={{path('ride.details', {id : ride.id,  slug: ride.slug})}}> 
-            {{ride.Departure()}} {{ ride.Arrival()}} </a>
+            <a href={{path('ride.details', {id : ride.id,  slug: ride.slug})}}> {{ride.departure()}} {{ ride.arrival()}} </a>
+                        {{ ride.car.brand }}
             <a class="btn btn-primary" href={{path('ride.edit', {id: ride.id, slug: ride.slug}) }}> Editer </a>
             <form action="{{path('ride.delete', {id: ride.id}) }}" method='post'>
                 <input type="hidden" name="_method" value="DELETE">

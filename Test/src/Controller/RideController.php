@@ -8,9 +8,11 @@ use App\Repository\RideRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 
 #[Route('/trajet', name: 'ride')]
 final class RideController extends AbstractController
@@ -18,12 +20,13 @@ final class RideController extends AbstractController
 
     public function __construct(private RideRepository $rideRepository)
     {
-        
     }
 
+
     #[Route('/', name: '.search.result')]
-    public function index(Request $request): Response
+    public function index(Request $request) : Response
     {
+
         $rides = $this->rideRepository->findAll();
 
         return $this->render('ride/index.html.twig', [
@@ -38,24 +41,9 @@ final class RideController extends AbstractController
             'ride' => $ride
         ]);
     }
-
-    #[Route('/{slug}-{id}/editer', name: '.edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
-    public function editRide (Ride $ride, Request $request, EntityManagerInterface $em, FormFactory $formFactory) {
-        $form = $formFactory->create(RideType::class, $ride);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $em->flush();
-            $this->addFlash('success', 'Les modifications ont bien été enregistrée');
-            return $this->redirectToRoute('ride.search.result');
-        }
-        return $this->render('ride/edit.html.twig', [
-            'ride' => $ride,
-            'rideForm' => $form
-        ]);
-    }
-
+    
     #[Route('/creer_trajet', name : '.create')]
-    public function create(Request $request, EntityManagerInterface $em, FormFactory $formFactory) {
+    public function create(Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory) {
         $ride = new Ride();
         $form = $formFactory->create(RideType::class, $ride);
         $form->handleRequest($request);
@@ -70,7 +58,22 @@ final class RideController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/delete', name: '.delete', methods: ['DELETE'])]
+    #[Route('/{slug}-{id}/editer', name: '.edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
+    public function editRide (Ride $ride, Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory) {
+        $form = $formFactory->create(RideType::class, $ride);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash('success', 'Les modifications ont bien été enregistrée');
+            return $this->redirectToRoute('ride.search.result');
+        }
+        return $this->render('ride/edit.html.twig', [
+            'ride' => $ride,
+            'rideForm' => $form
+        ]);
+    }
+
+    #[Route('/{id}/delete', name: '.delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
     public function removeRide(Ride $ride, EntityManagerInterface $em) {
         $em->remove($ride);
         $em->flush();

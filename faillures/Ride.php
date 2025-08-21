@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\RideRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\Request;
 
 #[ORM\Entity(repositoryClass: RideRepository::class)]
 class Ride
@@ -21,18 +20,13 @@ class Ride
     private ?string $arrival = null;
 
     #[ORM\Column]
-    private ?\DateTimeImmutable $departureDate = null;
+    private ?\DateTimeImmutable $dapartureDate = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $arrivalDate = null;
 
-
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
-
-    #[ORM\ManyToOne(inversedBy: 'ride', /*cascade: ['persist']*/)]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Car $car = null;
 
     public function getId(): ?int
     {
@@ -51,7 +45,7 @@ class Ride
         return $this;
     }
 
-    public function getarrival(): ?string
+    public function getArrival(): ?string
     {
         return $this->arrival;
     }
@@ -63,14 +57,14 @@ class Ride
         return $this;
     }
 
-    public function getDepartureDate(): ?\DateTimeImmutable
+    public function getDapartureDate(): ?\DateTimeImmutable
     {
-        return $this->departureDate;
+        return $this->dapartureDate;
     }
 
-    public function setDepartureDate(\DateTimeImmutable $departureDate): static
+    public function setDapartureDate(\DateTimeImmutable $dapartureDate): static
     {
-        $this->departureDate = $departureDate;
+        $this->dapartureDate = $dapartureDate;
 
         return $this;
     }
@@ -98,18 +92,4 @@ class Ride
 
         return $this;
     }
-
-    public function getCar(): ?Car
-    {
-        return $this->car;
-    }
-
-    public function setCar(?Car $car): static
-    {
-        $this->car = $car;
-
-        return $this;
-    }
-
-
 }

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Voiture ' %}
+
+{% block body %}
+
+    <p>
+        <a class="btn btn-secondary" href={{ path('user.car.create')}}>Ajouter un Véhicule</a>
+    </p>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Marque</th>
+                <th>Energie</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for car in cars %}
+                <tr>
+                    <td>{{ car.brand }}</td>
+                    <td>{{ car.energy }}</td>
+                    <td>
+                        <div class="d-flex gap-1">
+                            <a class="btn btn-primary" href="{{path('user.car.edit', {id: car.id})}}">Editer</a>
+
+                            <form action={{path('user.car.remove', {id: car.id})}} method="post">
+                                <input type="hidden" name:"_method" value="DELETE">
+                                <button class="btn btn-danger" type='submit'>Supprimer</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

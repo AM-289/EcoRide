@@ -32,6 +32,9 @@
                 <li class="nav-item">
                   <a class="nav-link {{ app.current_route == 'contact' ? 'active' : '' }}" aria-current="page" href={{path('contact')}}>Nous contacter</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link {{ app.current_route == 'user.car.' ? 'active' : '' }}" aria-current="page" href={{path('user.car.index')}}>Voitures</a>
+                </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Dropdown

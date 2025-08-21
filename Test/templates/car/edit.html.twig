@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Modifier le Véhicule' ~ car.brand %}
+
+{% block body %}
+
+    <h1>Modifier le Véhicule {{car.brand}}</h1>
+
+    <img src={{ vich_uploader_asset(car, 'thumbnailFile') }} alt="">
+
+    {{ form(form)}}
+
+{% endblock %}
