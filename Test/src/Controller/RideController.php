@@ -24,10 +24,10 @@ final class RideController extends AbstractController
 
 
     #[Route('/', name: '.search.result')]
-    public function index(Request $request) : Response
+    public function index(Request $request, RideRepository $repository) : Response
     {
-
-        $rides = $this->rideRepository->findAll();
+        $page = $request->query->getInt('page', 1);
+        $rides = $repository->paginateRecipe($page);
 
         return $this->render('ride/index.html.twig', [
             'controller_name' => 'RideController',

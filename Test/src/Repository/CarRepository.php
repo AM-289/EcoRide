@@ -16,6 +16,17 @@ class CarRepository extends ServiceEntityRepository
         parent::__construct($registry, Car::class);
     }
 
+        /**
+     * @return CarWithCountDTO[]
+     */
+    public function findAllWithCount(): array {
+        return $this->createQueryBuilder('c')
+            ->select('NEW App\\DTO\\CarWithCountDTO(c.id, c.brand, COUNT(r.id))')
+            ->leftJoin('c.recipes', 'r')
+            ->groupBy('c.id')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Car[] Returns an array of Car objects
     //     */
