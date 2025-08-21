@@ -10,13 +10,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route("/user/car", name: 'user.car.')]
+#[IsGranted('ROLE_USER')]
 class CarController extends AbstractController {
 
     #[Route(name: 'index')]
     public function index(CarRepository $repository) {
-        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('car/index.html.twig', [
             'cars' =>$repository->findAll()
         ]);
