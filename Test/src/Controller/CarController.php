@@ -16,6 +16,7 @@ class CarController extends AbstractController {
 
     #[Route(name: 'index')]
     public function index(CarRepository $repository) {
+        $this->denyAccessUnlessGranted('ROLE_USER');
         return $this->render('car/index.html.twig', [
             'cars' =>$repository->findAll()
         ]);
