@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\RideRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: RideRepository::class)]
 class Ride
@@ -15,12 +16,15 @@ class Ride
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('rides.index')]
     private ?string $departure = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups('rides.index')]
     private ?string $arrival = null;
 
     #[ORM\Column]
+    #[Groups('rides.show')]
     private ?\DateTimeImmutable $departureDate = null;
 
     #[ORM\Column]
