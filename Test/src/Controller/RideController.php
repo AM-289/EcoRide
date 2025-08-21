@@ -7,6 +7,7 @@ use App\Form\RideType;
 use App\Repository\RideRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormFactory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -14,11 +15,16 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/trajet', name: 'ride')]
 final class RideController extends AbstractController
 {
-    
-    #[Route('/', name: '.search.result')]
-    public function index(Request $request, RideRepository $rideRepository): Response
+
+    public function __construct(private RideRepository $rideRepository)
     {
-        $rides = $rideRepository->findAll();
+        
+    }
+
+    #[Route('/', name: '.search.result')]
+    public function index(Request $request): Response
+    {
+        $rides = $this->rideRepository->findAll();
 
         return $this->render('ride/index.html.twig', [
             'controller_name' => 'RideController',
@@ -34,8 +40,8 @@ final class RideController extends AbstractController
     }
 
     #[Route('/{slug}-{id}/editer', name: '.edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
-    public function editRide (Ride $ride, Request $request, EntityManagerInterface $em) {
-        $form = $this->createForm(RideType::class, $ride);
+    public function editRide (Ride $ride, Request $request, EntityManagerInterface $em, FormFactory $formFactory) {
+        $form = $formFactory->create(RideType::class, $ride);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->flush();
@@ -49,9 +55,9 @@ final class RideController extends AbstractController
     }
 
     #[Route('/creer_trajet', name : '.create')]
-    public function create(Request $request, EntityManagerInterface $em) {
+    public function create(Request $request, EntityManagerInterface $em, FormFactory $formFactory) {
         $ride = new Ride();
-        $form = $this->createForm(RideType::class, $ride);
+        $form = $formFactory->create(RideType::class, $ride);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($ride);

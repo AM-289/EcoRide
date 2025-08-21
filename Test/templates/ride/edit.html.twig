@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'EcoRide Editer : ' ~ ride.Departure %}
+
+{% block body %}
+    {{ride.slug}}
+
+    {{ form(rideForm) }}
+{% endblock %}
