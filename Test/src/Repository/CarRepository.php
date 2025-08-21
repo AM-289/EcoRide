@@ -16,7 +16,9 @@ class CarRepository extends ServiceEntityRepository
         parent::__construct($registry, Car::class);
     }
 
-        /**
+
+    //To count les objets liés
+    /**
      * @return CarWithCountDTO[]
      */
     public function findAllWithCount(): array {

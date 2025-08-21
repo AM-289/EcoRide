@@ -19,7 +19,8 @@ class CarController extends AbstractController {
     #[Route(name: 'index')]
     public function index(CarRepository $repository) {
         return $this->render('car/index.html.twig', [
-            'cars' =>$repository->findAll()
+            /*'cars' =>$repository->findAll()*/
+            'cars' =>$repository->findAllWithCount()
         ]);
 
     }
