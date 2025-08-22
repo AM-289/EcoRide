@@ -35,7 +35,7 @@ class Ride
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
-    #[ORM\ManyToOne(inversedBy: 'ride', /*cascade: ['persist']*/)]
+    #[ORM\ManyToOne(inversedBy: 'rides', /*cascade: ['persist']*/)]
     #[ORM\JoinColumn(nullable: false)]
     #[Groups('rides.create')]
     private ?Car $car = null;

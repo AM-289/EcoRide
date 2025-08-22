@@ -132,7 +132,7 @@ class Car
         return $this;
     }
 
-        /**
+    /**
      * @return Collection<int, Ride>
      */
     public function getRides(): Collection
@@ -140,22 +140,22 @@ class Car
         return $this->rides;
     }
 
-    public function addRides(Ride $rides): static
+    public function addRide(Ride $ride): static
     {
-        if (!$this->rides->contains($rides)) {
-            $this->rides->add($rides);
-            $rides->setCar($this);
+        if (!$this->rides->contains($ride)) {
+            $this->rides->add($ride);
+            $ride->setCar($this);
         }
 
         return $this;
     }
 
-    public function removeRides(Ride $rides): static
+    public function removeRide(Ride $ride): static
     {
-        if ($this->rides->removeElement($rides)) {
+        if ($this->rides->removeElement($ride)) {
             // set the owning side to null (unless already changed)
-            if ($rides->getCar() === $this) {
-                $rides->setCar(null);
+            if ($ride->getCar() === $this) {
+                $ride->setCar(null);
             }
         }
 
@@ -174,7 +174,7 @@ class Car
         return $this;
     }
 
-        public function getThumbnailFile(): ?File
+    public function getThumbnailFile(): ?File
     {
         return $this->thumbnailFile;
     }

@@ -23,8 +23,8 @@ class CarRepository extends ServiceEntityRepository
      */
     public function findAllWithCount(): array {
         return $this->createQueryBuilder('c')
-            ->select('NEW App\\DTO\\CarWithCountDTO(c.id, c.brand, COUNT(r.id))')
-            ->leftJoin('c.recipes', 'r')
+            ->select('NEW App\\DTO\\CarWithCountDTO(c.id, c.brand, c.energy, COUNT(r.id))')
+            ->leftJoin('c.rides', 'r')
             ->groupBy('c.id')
             ->getQuery()
             ->getResult();

@@ -4,9 +4,11 @@ namespace App\Repository;
 
 use App\Entity\Ride;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @extends ServiceEntityRepository<Ride>
@@ -19,20 +21,24 @@ class RideRepository extends ServiceEntityRepository
     }
 
     /** @kn_paginator */
-    public function paginateRide(int $page): PaginationInterface {
-    
+    public function paginateRide(int $page): PaginationInterface
+    {
         return $this->paginator->paginate(
             $this->createQueryBuilder('r')->leftJoin('r.car', 'c')->select('r', 'c'),
             $page,
-            8,
-            //pour éviter que quelqu'un rentre qlque chose dans l'url qu'on ne veut pas :
+            4,
+            //To filter the user entries in the url
             [
                 'distinct' => false,
                 'sortFieldAllowList' => [
-                    'r.id'
+                    'r.id',
+                    'r.departure'
                 ]
-            ]);
+            ]
+        );
     }
+
+            
 
     //    /**
     //     * @return Ride[] Returns an array of Ride objects

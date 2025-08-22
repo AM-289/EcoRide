@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route("/user/car", name: 'user.car.')]
-#[IsGranted('ROLE_USER')]
+//#[IsGranted('ROLE_USER')]
 class CarController extends AbstractController {
 
     #[Route(name: 'index')]

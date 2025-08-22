@@ -13,10 +13,14 @@
     
     <a class="btn btn-primary" href={{ path('ride.create')}}> Créer un trajet </a>
 
+     {{knp_pagination_sortable(rides, 'ID', 'r.id')}}
+     {{knp_pagination_sortable(rides, 'departure', 'r.departure')}}
+             {{knp_pagination_sortable(rides, 'Car', 'r.car') }}
+
     <ul>
         {% for ride in rides %}
         <li>
-            {{knp_pagination_sortable(rides, 'ID', 'r.id')}}
+            {{ride.id}}
             <a href={{path('ride.details', {id : ride.id,  slug: ride.slug})}}> {{ride.departure()}} {{ ride.arrival()}} </a>
                         {{ ride.car.brand }}
             <a class="btn btn-primary" href={{path('ride.edit', {id: ride.id, slug: ride.slug}) }}> Editer </a>
@@ -28,6 +32,6 @@
         {% endfor %}
     </ul>
 
-    {{ knp_pagination_render(rides)}}
+        {{ knp_pagination_render(rides)}}
 </div>
 {% endblock %}
