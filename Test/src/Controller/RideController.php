@@ -27,7 +27,7 @@ final class RideController extends AbstractController
     public function index(Request $request, RideRepository $repository) : Response
     {
         $page = $request->query->getInt('page', 1);
-        $rides = $repository->paginateRecipe($page);
+        $rides = $repository->paginateRide($page);
 
         return $this->render('ride/index.html.twig', [
             'controller_name' => 'RideController',

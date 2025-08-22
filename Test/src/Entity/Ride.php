@@ -16,18 +16,19 @@ class Ride
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('rides.index')]
+    #[Groups('rides.index', 'rides.create')]
     private ?string $departure = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups('rides.index')]
+    #[Groups('rides.index', 'rides.create')]
     private ?string $arrival = null;
 
     #[ORM\Column]
-    #[Groups('rides.show')]
+    #[Groups('rides.show', 'rides.create')]
     private ?\DateTimeImmutable $departureDate = null;
 
     #[ORM\Column]
+    #[Groups('rides.create')]
     private ?\DateTimeImmutable $arrivalDate = null;
 
 
@@ -36,6 +37,7 @@ class Ride
 
     #[ORM\ManyToOne(inversedBy: 'ride', /*cascade: ['persist']*/)]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups('rides.create')]
     private ?Car $car = null;
 
     public function getId(): ?int

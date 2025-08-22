@@ -16,11 +16,11 @@ use Symfony\Component\Routing\Requirement\Requirement;
 class RidesController extends AbstractController {
     
     #[Route("/api/rides", methods: ['GET'])]
-    public function index(RideRepository $repository, #[MapQueryString()] PaginationDTO $paginationDTO) 
+    public function index(RideRepository $repository, #[MapQueryString()] ?PaginationDTO $paginationDTO = null) 
     {
         $rides = $repository->paginateRide($paginationDTO->page);
         return $this->json($rides, 200, [], [
-            'groups' => ['ride.index']
+            'groups' => ['rides.index']
         ]);
     }
 
@@ -35,7 +35,8 @@ class RidesController extends AbstractController {
     public function create(Request $request, 
     #[MapRequestPayload(
         serializationContext: [
-            'groups' => ['ride.create']
+            //control wath the user can enter
+            'groups' => ['rides.create']
         ]
     )]
     Ride $ride, 
@@ -43,7 +44,7 @@ class RidesController extends AbstractController {
         $em->persist($ride);
         $em->flush();
         return $this->json($ride, 200, [], [
-            'goups' => ['recipes.index', 'recipes.show']
+            'goups' => ['rides.index', 'rides.show']
         ]);
     }
         

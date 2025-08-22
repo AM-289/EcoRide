@@ -6,19 +6,20 @@ use App\Entity\Ride;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Ride>
  */
 class RideRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, private PaginatorInterface $paginator)
     {
         parent::__construct($registry, Ride::class);
     }
 
-        /**@kn_paginator */
-    public function paginateRecipe(int $page): PaginationInterface {
+    /** @kn_paginator */
+    public function paginateRide(int $page): PaginationInterface {
     
         return $this->paginator->paginate(
             $this->createQueryBuilder('r')->leftJoin('r.car', 'c')->select('r', 'c'),
