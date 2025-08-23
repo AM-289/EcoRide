@@ -27,6 +27,7 @@ class PaginationNormaliser implements NormalizerInterface {
         }
 
         return [
+            //array_map to normalize each items
             'items' => array_map( fn (Ride $ride) => $this->normalizer->normalize($ride, $format, $context), $object->getItems()),
             'total' => $object->getTotalItemCount(),
             'page' => $object->getCurrentPageNumber(),

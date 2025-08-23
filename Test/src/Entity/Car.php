@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,6 +21,7 @@ class Car
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['rides.show'])]
     private ?string $brand = null;
 
     #[ORM\Column(length: 255)]

@@ -15,9 +15,8 @@ use Symfony\Component\Routing\Requirement\Requirement;
 
 class RidesController extends AbstractController {
     
-    #[Route("/api/rides", methods: ['GET'])]
-    public function index(RideRepository $repository, #[MapQueryString()] ?PaginationDTO $paginationDTO = null) 
-    {
+    #[Route("/api/rides", methods: "GET")]
+    public function index(RideRepository $repository, #[MapQueryString()] PaginationDTO $paginationDTO) {
         $rides = $repository->paginateRide($paginationDTO->page);
         return $this->json($rides, 200, [], [
             'groups' => ['rides.index']
@@ -27,12 +26,13 @@ class RidesController extends AbstractController {
     #[Route("/api/rides/{id}", requirements: ['id' => Requirement::DIGITS])]
     public function show(Ride $ride) {
         return $this->json($ride, 200, [], [
-            'goups' => ['rides.index', 'rides.show']
+            'groups' => ['rides.index', 'rides.show']
         ]);
     }
 
     #[Route("/api/rides", methods: ['POST'])]
     public function create(Request $request, 
+    //MapRequestPayload -> paylood of json is going to be injected into ride
     #[MapRequestPayload(
         serializationContext: [
             //control wath the user can enter
@@ -44,7 +44,7 @@ class RidesController extends AbstractController {
         $em->persist($ride);
         $em->flush();
         return $this->json($ride, 200, [], [
-            'goups' => ['rides.index', 'rides.show']
+            'groups' => ['rides.index', 'rides.show']
         ]);
     }
         

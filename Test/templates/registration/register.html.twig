@@ -12,7 +12,7 @@
     {{ form_errors(registrationForm) }}
         
     {{ form(registrationForm) }}
-
+    {{ form_rest(registrationForm) }}
     <p> Vous avez déjà un compte ? 
         <a href={{path('app_login')}}>Se connecter</a>
 {% endblock %}
