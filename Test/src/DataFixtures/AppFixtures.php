@@ -4,10 +4,12 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class AppFixtures extends Fixture
+class AppFixtures extends Fixture implements FixtureInterface
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $hasher
@@ -27,13 +29,19 @@ class AppFixtures extends Fixture
             ->setApiToken('admin_token');
         $manager->persist($user);
 
+        $faker = Factory::create('fr_FR');
+       
+
+
         for ($i = 1; $i <= 10; $i++) {
+            $user = (new User());
+            $username = $faker->name();
             $user->setRoles([])
-                ->setEmail('user{$i}@doe.fr')
-                ->setUsername('user{$i}')
+                ->setUsername($username)
+                ->setEmail("user{$i}@doe.fr")
                 ->setIsVerified('true')
                 ->setPassword($this->hasher->hashPassword($user, '0000'))
-                ->setApiToken('user{$id}');
+                ->setApiToken("user{$i}");
             $manager->persist($user);
         }
         
