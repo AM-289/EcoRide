@@ -52,6 +52,10 @@ class Car
     #[Assert\Image()]
     private ?File $thumbnailFile = null;
 
+    #[ORM\ManyToOne(inversedBy: 'cars')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $driver = null;
+
     public function __construct()
     {
         $this->rides = new ArrayCollection();
@@ -184,6 +188,18 @@ class Car
     public function setThumbnailFile(?File $thumbnailFile): static
     {
         $this->thumbnailFile = $thumbnailFile;
+
+        return $this;
+    }
+
+    public function getDriver(): ?User
+    {
+        return $this->driver;
+    }
+
+    public function setDriver(?User $driver): static
+    {
+        $this->driver = $driver;
 
         return $this;
     }

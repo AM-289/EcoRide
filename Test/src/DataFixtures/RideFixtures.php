@@ -17,7 +17,7 @@ class RideFixtures extends Fixture implements FixtureInterface
     }
 
     //to load the car faker before the ride one
-    public function getDependency() {
+   /* public function getDependency() {
         return [CarFixtures::class];
-    }
+    }*/
 }

@@ -44,6 +44,19 @@ class AppFixtures extends Fixture implements FixtureInterface
                 ->setApiToken("user{$i}");
             $manager->persist($user);
         }
+
+        for ($i = 11; $i <= 20; $i++) {
+            $user = (new User());
+            $username = $faker->name();
+            $user->setRoles(['ROLE_DRIVER'])
+                ->setUsername($username)
+                ->setEmail("user{$i}@doe.fr")
+                ->setIsVerified('true')
+                ->setPassword($this->hasher->hashPassword($user, '0000'))
+                ->setApiToken("user{$i}");
+                $this->addReference('DRIVER'. $i, $user);
+            $manager->persist($user);
+        }
         
         $manager->flush();
     }
