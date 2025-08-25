@@ -5,5 +5,8 @@
 {% block body %}
     {{ride.slug}}
 
-    {{ form(rideForm) }}
+    <turbo-frame id="ride_{{ ride.id }}">
+        {{ form(rideForm, {action: path('ride.mine.edit', {id: ride.id})}) }}
+    </turbo-frame>
+
 {% endblock %}

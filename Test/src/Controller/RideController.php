@@ -89,6 +89,21 @@ final class RideController extends AbstractController
         ]);
     }
 
+    #[Route('/{id}/editer', name: '.mine.edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function editMyRide (Ride $ride, Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory) {
+        $form = $formFactory->create(RideType::class, $ride);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->flush();
+            $this->addFlash('success', 'Les modifications ont bien été enregistrée');
+            return $this->redirectToRoute('ride.search.result');
+        }
+        return $this->render('ride/edit.html.twig', [
+            'ride' => $ride,
+            'rideForm' => $form
+        ]);
+    }
+
     #[Route('/{id}/delete', name: '.delete', methods: ['DELETE'], requirements: ['id' => Requirement::DIGITS])]
     public function removeRide(Ride $ride, EntityManagerInterface $em) {
         $em->remove($ride);

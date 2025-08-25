@@ -20,8 +20,12 @@
     <ul>
         {% for ride in rides %}
         <li>
-            {{ride.id}}
-            <a href={{path('ride.details', {id : ride.id,  slug: ride.slug})}}> {{ride.departure()}} {{ ride.arrival()}} </a>
+            
+                    {{ride.id}}
+            
+            <turbo-frame id="ride_{{ ride.id }}">
+                <a href={{path('ride.mine.edit', {id: ride.id}) }}> {{ride.departure()}} {{ ride.arrival()}} </a>
+            </turbo-frame>
                         {{ ride.car.brand }}
             <a class="btn btn-primary" href={{path('ride.edit', {id: ride.id, slug: ride.slug}) }}> Editer </a>
             <form action="{{path('ride.delete', {id: ride.id}) }}" method='post'>
