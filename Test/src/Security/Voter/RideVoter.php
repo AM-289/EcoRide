@@ -2,36 +2,27 @@
 
 namespace App\Security\Voter;
 
-use App\Entity\Car;
 use App\Entity\User;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
-use Symfony\Component\Security\Core\Authorization\Voter\Vote;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-final class CarVoter extends Voter
+final class RideVoter extends Voter
 {
-    public const EDIT = 'CAR_EDIT';
-    public const VIEW = 'CAR_VIEW';
-    public const LIST = 'CAR_LIST';
-    public const LIST_ALL = 'CAR_ALL';
-
-    public function __construct(private AccessDecisionManagerInterface $accessDecisionManager, private readonly Security $security)
-    {
-        
-    }
+    public const EDIT = 'RIDE_EDIT';
+    public const VIEW = 'RIDE_VIEW';
+    public const LIST = 'RIDE_LIST';
+    public const LIST_ALL = 'RIDE_LIST_ALL';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
         // replace with your own logic
         // https://symfony.com/doc/current/security/voters.html
         return in_array($attribute, [self::LIST, self::LIST_ALL]) || in_array($attribute, [self::EDIT, self::VIEW])
-            && $subject instanceof \App\Entity\Car;
+            && $subject instanceof \App\Entity\Ride;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token, ?Vote $vote = null): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 
@@ -43,14 +34,13 @@ final class CarVoter extends Voter
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::EDIT:
-                return $subject->getDriver()->getId() === $user->getId();
+                return $subject->getDriver()->getId() === $user->getUserIdentifier();
                 break;
 
             case self::VIEW:
-            case self::LIST:
-                return true;
+                // logic to determine if the user can VIEW
+                // return true or false
                 break;
-
         }
 
         return false;
