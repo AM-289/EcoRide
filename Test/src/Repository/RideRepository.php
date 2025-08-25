@@ -21,6 +21,29 @@ class RideRepository extends ServiceEntityRepository
     }
 
     /** @kn_paginator */
+    public function paginateRideUser(int $page, int $userID): PaginationInterface
+    {
+        $builder = $this->createQueryBuilder('r')->leftJoin('r.car', 'c')->select('r', 'c');
+        if ($userID){
+            $builder = $builder->andWhere('r.driver = :user')
+                ->setParameter('user', $userID);
+        }
+        return $this->paginator->paginate(
+            $builder,
+            $page,
+            4,
+            //To filter the user entries in the url
+            [
+                'distinct' => false,
+                'sortFieldAllowList' => [
+                    'r.id',
+                    'r.departure'
+                ]
+            ]
+        );
+    }
+
+    /** @kn_paginator */
     public function paginateRide(int $page): PaginationInterface
     {
         return $this->paginator->paginate(

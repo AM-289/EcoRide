@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Ride;
 use App\Form\RideType;
 use App\Repository\RideRepository;
+use App\Security\Voter\CarVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,6 +37,20 @@ final class RideController extends AbstractController
         ]);
     }
 
+    #[Route('/mes_trajets', name: '.myride')]
+    public function list(Request $request, RideRepository $repository, Security $security) : Response
+    {   
+        $page = $request->query->getInt('page', 1);
+        $userId = $security->getUser()->getUserIdentifier();
+        $canListAll = $security(CarVoter::LIST_ALL);
+        $rides = $repository->paginateRideUser($page, $canListAll ? null : $userId);
+
+        return $this->render('ride/index.html.twig', [
+            'controller_name' => 'RideController',
+            'rides' => $rides,
+        ]);
+    }
+    
     #[Route('/{slug}-{id}', name: '.details', requirements: ['id' => '\d+', 'slug' => '[a-z0-9-]+'])]
     public function rideDetails(Request $request, Ride $ride): Response {
         return $this->render('ride/ride.details.html.twig', [
