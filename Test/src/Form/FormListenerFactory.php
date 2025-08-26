@@ -25,4 +25,16 @@ class FormListenerFactory {
             }
         };
     }
+
+    
+    public function timeStamps(): callable {
+        return function (PostSubmitEvent $event) {
+            $data = $event->getData();
+            $data->setUpdatedAt(new \DateTimeImmutable());
+            if (!$data->getId()) {
+                $data->setCreatedAt(new \DateTimeImmutable());
+            }
+        };
+    }
+
 }

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Car;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,6 +14,11 @@ use Symfony\Component\Validator\Constraints\Image;
 
 class CarType extends AbstractType
 {
+
+    public function __construct(private FormListenerFactory $listenerFactory){
+        
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -26,6 +32,7 @@ class CarType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Enregistrer'
             ])
+            ->addEventListener(FormEvents::POST_SUBMIT, $this->listenerFactory->timeStamps())
         ;
     }
 

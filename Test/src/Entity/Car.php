@@ -56,9 +56,16 @@ class Car
     #[ORM\JoinColumn(nullable: false)]
     private ?User $driver = null;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $createdAt = null;
+
     public function __construct()
     {
         $this->rides = new ArrayCollection();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -172,19 +179,22 @@ class Car
     {
         return $this->thumbnail;
     }
-
+    
     public function setThumbnail(?string $thumbnail): static
     {
         $this->thumbnail = $thumbnail;
 
         return $this;
     }
-
+    
     public function getThumbnailFile(): ?File
     {
         return $this->thumbnailFile;
     }
 
+    /**
+     * * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $thumbnailFile
+     */
     public function setThumbnailFile(?File $thumbnailFile): static
     {
         $this->thumbnailFile = $thumbnailFile;
@@ -200,6 +210,30 @@ class Car
     public function setDriver(?User $driver): static
     {
         $this->driver = $driver;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
 
         return $this;
     }
