@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Modifier le profile' ~ user.username %}
+
+{% block body %}
+
+    <h1>Modifier le profile {{user.username}}</h1>
+
+    <img src={{ vich_uploader_asset(user, 'profilePicFile') }} alt="">
+
+    {{ form(form)}}
+
+{% endblock %}

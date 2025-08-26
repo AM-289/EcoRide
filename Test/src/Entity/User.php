@@ -7,13 +7,17 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this username')]
+#[Vich\Uploadable()]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -50,6 +54,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\OneToMany(targetEntity: Car::class, mappedBy: 'driver', orphanRemoval: true)]
     private Collection $cars;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAT = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profilePic = null;
+
+    #[Vich\UploadableField(mapping: 'profilePic', fileNameProperty: 'profilePic')]
+    #[Assert\Image()]
+    private ?File $profilePicFile = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -199,6 +219,69 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $car->setDriver(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCreatedAT(): ?\DateTimeImmutable
+    {
+        return $this->createdAT;
+    }
+
+    public function setCreatedAT(?\DateTimeImmutable $createdAT): static
+    {
+        $this->createdAT = $createdAT;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getProfilePic(): ?string
+    {
+        return $this->profilePic;
+    }
+
+    public function setProfilePic(?string $profilePic): static
+    {
+        $this->profilePic = $profilePic;
+
+        return $this;
+    }
+
+    public function getProfilePicFile(): ?File
+    {
+        return $this->profilePicFile;
+    }
+
+    /**
+     * * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $profilePicFile
+     */
+    public function setProfilePicFile(?File $profilePicFile): static
+    {
+        $this->profilePicFile = $profilePicFile;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

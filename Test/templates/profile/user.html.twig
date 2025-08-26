@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'EcoRide profile : ' ~ user.username %}
+
+<a class="btn btn-primary" href="{{path('user.car.edit', {id: car.id})}}">Editer</a>
+
+{% block body %}
+{% endblock %}
