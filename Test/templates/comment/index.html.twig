@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title 'EcoRide profile : ' %}
+{% block title 'EcoRide : ' %}
 
 {% block body %}
 
@@ -10,19 +10,18 @@
 <table class="table">
         <thead>
             <tr>
-                <th>Marque</th>
-                <th>Energie</th>
-                <th>Actions</th>
+                <th>Commentaires</th>
             </tr>
         </thead>
         <tbody>
         {% for comment in comments %}
             <tr>
-                <td>{{ comment.author }}</td>
-                <td>{{ comment.updatedAt ~ comment.updatedAt }}</td>
+                <td>{{ comment.author }} </td>
+                <td>{{ comment.content}}</td>
                 <td>
                     <div class="d-flex gap-1">
-                        <a class="btn btn-primary" href={{path('user.comment.edit')}}>Editer</a>                        
+                        
+                        <a class="btn btn-primary" href={{path('comment.edit', {id: comment.id})}}>Editer</a>                        
                         <form action="" method="post">
                             <input type="hidden" name:"_method" value="DELETE">
                             <button class="btn btn-danger" type='submit'>Supprimer</button>

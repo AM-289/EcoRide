@@ -33,6 +33,7 @@ class CarController extends AbstractController {
     #[IsGranted('ROLE_DRIVER')]
     public function create(Request $request, EntityManagerInterface $en) {
         $car = new Car();
+        $car->setDriver($this->getUser());
         $form = $this->createForm(CarType::class, $car);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
