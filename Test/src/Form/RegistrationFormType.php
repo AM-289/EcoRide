@@ -62,7 +62,7 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('slug', TextType::class, [
+           ->add('slug', TextType::class, [
                 'required' => false,
             ])
             ->add('save', SubmitType::class, [

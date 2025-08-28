@@ -2,27 +2,19 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Entity\Comment;
 use App\Entity\Profile;
 use App\Form\CommentType;
 use App\Form\FormListenerFactory;
-use App\Form\ProfileType;
-use App\Repository\CommentRepository;
-use App\Repository\ProfileRepository;
-use App\Repository\UserRepository;
 use App\Security\Voter\CommentVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
-use Symfony\Config\TwigConfig;
+
 
 #[Route(path: '/profile', name: 'user.')]
 //#[IsGranted(['ROLE_USER'])]
@@ -38,36 +30,33 @@ class ProfileController extends AbstractController {
         ]);
     }*/
     
-    public function __construct(private FormListenerFactory $listenerFactory,
-    //private SluggerInterface $slugger
-    ){
+    public function __construct(private FormListenerFactory $listenerFactory,){
         
     }
 
-    //)
-    #[Route(path: '/{slug}', name: 'profile', requirements: [ 'slug' => '[a-z0-9-]+'])] 
-    //#[IsGranted('ROLE_DRIVER')]
-    public function driverProfile( ProfileRepository $repository, Security $security, FormFactoryInterface $formFactory, EntityManagerInterface $em, Request $request): Response
+    #[Route(path: '/', name: 'create')] 
+    public function createProfile(EntityManagerInterface $em): Response
     {
-        $profile = new Profile();
-        $profile->setUser($this->getUser())
-            ->setSlug('test-01')
-            ->setUpdatedAt(new \DateTimeImmutable())
-            ->setCreatedAt(new \DateTimeImmutable());
-        //$form = $this->createForm(ProfileType::class, $profile);
-        //$form->handleRequest($request);
-        //if ($form->isSubmitted() && $form->isValid()) {
+        $profile = (new Profile())
+                ->setUser($this->getUser())
+                ->setCreatedAt(new \DateTimeImmutable())
+                ->setUpdatedAt(new \DateTimeImmutable())
+                ->setSlug($this->listenerFactory->autoSlug('username'));
+        
             $em->persist($profile);
             $em->flush();
-            $this->addFlash('success', 'Voiture créée');
-            //return $this->redirectToRoute('user.car.index');
-        //}
 
-        //$profile = $repository->findOneBy(['slug' => $slug]);
+        return $this->redirectToRoute('home');
+    }
 
-        return $this->render('profile/profile.html.twig', [
-            'profile' => $profile
-        ]);
+    #[Route(path: '/{slug}', name: 'profile', requirements: [ 'slug' => '[a-z0-9-]+'])]
+    public function showProfile(){
+        
+        //$profile = $this->getProfile();
+
+        return $this->render(
+            'profile/profile.html.twig'
+        );
     }
 
     #[Route('/{id}', name: 'comment.edit', requirements: ['id' =>Requirement::DIGITS], methods: ['GET', 'POST'])]
