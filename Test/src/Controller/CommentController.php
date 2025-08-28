@@ -35,7 +35,7 @@ class CommentController extends AbstractController {
             $em->flush();
             $this->addFlash('success', 'Trajet créé');
         }
-        return $this->render('comment/index.html.twig', [
+        return $this->render('comment/comment.html.twig', [
             'commentForm' => $form,
             'comments' =>$repository->findAll()
         ]);
