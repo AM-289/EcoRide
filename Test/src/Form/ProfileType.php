@@ -24,9 +24,9 @@ class ProfileType extends AbstractType
             ->add('description')
             ->add('user', EntityType::class, [
                 'class' => User::class,
-                'choice_label' => 'id',
+                'choice_label' => 'username',
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->listenerFactory->autoSlug('username'))
+            //->addEventListener(FormEvents::PRE_SUBMIT, $this->listenerFactory->autoSlug('username'))
             ->addEventListener(FormEvents::POST_SUBMIT, $this->listenerFactory->timeStamps())
         ;
     }

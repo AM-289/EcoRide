@@ -25,7 +25,6 @@ class FormListenerFactory {
             }
         };
     }
-
     
     public function timeStamps(): callable {
         return function (PostSubmitEvent $event) {

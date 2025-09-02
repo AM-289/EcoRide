@@ -52,14 +52,21 @@ class RegistrationController extends AbstractController
 
             // do anything else you need here, like send an email  
 
-            return $security->login($user, AppAuthenticator::class, 'main');
-
-            return $this->redirectToRoute('app_register');
+            return $security->login($user, AppAuthenticator::class, 'main');            
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form,
         ]);
+        
+        $response = $this->forward('App\Controller\ProfileController::createProfile', [
+                'slug'  => $slug,
+                'user_id' => $id
+            ]);
+
+        return $response;
+        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('user.test');
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]

@@ -33,7 +33,7 @@ class CommentController extends AbstractController {
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($comment);
             $em->flush();
-            $this->addFlash('success', 'Trajet créé');
+            $this->addFlash('success', 'Commentaire ajouté');
         }
         return $this->render('comment/comment.html.twig', [
             'commentForm' => $form,

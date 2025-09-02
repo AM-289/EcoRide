@@ -14,8 +14,7 @@
             </tr>
         </thead>
         <tbody>
-        {% for comment in comments %}
-            <tr>
+            <tr> {{comment.createdAt|date('d/m/y')}}
                 <td>{{ comment.author }} </td>
                 <td>{{ comment.content}}</td>
             </tr>
@@ -31,7 +30,7 @@
                     </div>
                 </td>
                 </tr>
-            {% endfor %}
+
         </tbody>
     </table>
 {% endblock %}
